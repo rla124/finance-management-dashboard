@@ -18,23 +18,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
-const formSchema = z.object({
-  email: z.string().email(),
-});
+import CustomInput from "./CustomInput";
+import { authFormSchema } from "@/lib/utils";
 
 const AuthForm = ({ type }: { type: string }) => {
   const [user, setUser] = useState(null);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof authFormSchema>>({
+    resolver: zodResolver(authFormSchema),
     defaultValues: {
       email: "",
+      password: "",
     },
   });
 
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof authFormSchema>) {
     console.log(values);
   }
   return (
@@ -69,44 +67,27 @@ const AuthForm = ({ type }: { type: string }) => {
         <>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <FormField
+              <CustomInput
                 control={form.control}
                 name="email"
-                render={({ field }) => (
-                  <div className="form-item">
-                    <FormLabel className="form-label">Email</FormLabel>
-                    <div className="flex w-full flex-col">
-                      <FormControl>
-                        <Input
-                          placeholder="Enter your email"
-                          className="input-class"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage className="form-message mt-2" />
-                    </div>
-                  </div>
-                )}
+                label="Email"
+                placeholder="Enter your email"
               />
-              <FormField
+
+              <CustomInput
                 control={form.control}
                 name="password"
-                render={({ field }) => (
-                  <div className="form-item">
-                    <FormLabel className="form-label">Password</FormLabel>
-                    <div className="flex w-full flex-col">
-                      <FormControl>
-                        <Input
-                          placeholder="Enter your password"
-                          className="input-class"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage className="form-message mt-2" />
-                    </div>
-                  </div>
-                )}
+                label="Password"
+                placeholder="Enter your password"
               />
+
+              <CustomInput
+                control={form.control}
+                name="username"
+                label="Username"
+                placeholder="Enter your password"
+              />
+
               <Button type="submit">Submit</Button>
             </form>
           </Form>
